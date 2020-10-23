@@ -10,9 +10,10 @@ from pyspark.sql import types as t
 from pyspark.sql.types import StringType
 from pyspark.ml.feature import StringIndexer, VectorAssembler,StandardScaler
 from pyspark.ml import Pipeline, PipelineModel
+import config 
 
 
-def transform(sc,sqlContext,local):
+def transform(sc,sqlContext,local,debug):
 
     """
     This function loads data from hive or load csv and undergo data transformation prior to inference
@@ -32,11 +33,11 @@ def transform(sc,sqlContext,local):
     if local:
         race_df = sqlContext.read.format('com.databricks.spark.csv')\
                         .options(header='true', inferschema='true')\
-                        .load('../races.csv')
+                        .load(config.races_data_path)
     
         runs_df = sqlContext.read.format('com.databricks.spark.csv')\
                         .options(header='true', inferschema='true')\
-                        .load('../runs.csv')
+                        .load(config.runs_data_path)
     
     ## Clean Race Data
     # check to see if we have NaN, then drop NaN
@@ -44,11 +45,12 @@ def transform(sc,sqlContext,local):
     
     ## Load Race Convert Model
     print('transforming race dataframe...')
-    string_convert_model_fit = PipelineModel.load('../race_convert_model.pb')
+    string_convert_model_fit = PipelineModel.load(config.race_pipeline_path)
     processed_race_df = string_convert_model_fit.transform(race_df)\
                         .drop('config','going','venue')
     print('transforming race dataframe completed')
-    processed_race_df.printSchema()
+    if debug:
+        processed_race_df.show(2)
     
     ## Clean Run Data
     runs_df = runs_df.select('race_id', 'draw',
@@ -62,10 +64,11 @@ def transform(sc,sqlContext,local):
     
     ## Load runs_convert_model
     print('transforming runs dataframe')
-    runs_convert_model_fit = PipelineModel.load('../runs_convert_model.pb')
+    runs_convert_model_fit = PipelineModel.load(config.runs_pipeline_path)
     runs_processed_df = runs_convert_model_fit.transform(runs_df).drop('horse_country','horse_type')
     print('transforming runs dataframe completed')
-    runs_processed_df.printSchema()
+    if debug:
+        runs_processed_df.show(2)
     
     ## Pivot the runs dataframe from long to wide format
     from utils import rename_col_dictionary, rename_columns
@@ -90,7 +93,8 @@ def transform(sc,sqlContext,local):
         
     ## Fill NA with zero
     runs_df = final.fillna(0)
-    
+   
+    ## Join Race and Runs Dataframe together
     join_df = processed_race_df.join(runs_df, on='race_id', how='right')
     
     ## Drop race_id
@@ -106,23 +110,26 @@ def transform(sc,sqlContext,local):
     output_cols = [col + '_scaled' for col in X_all.columns]
     
     ## Scaling the variables using saved Scaler 
-    scaler_fit = PipelineModel.load('../scaler_model.pb')
+    scaler_fit = PipelineModel.load(config.scaler_pipeline_path)
     scaledData = scaler_fit.transform(X_all)
     selected = [s for s in scaledData.columns if 'scaled'  in s]
     scaledData_final = scaledData.select(selected)
-    scaledData_final.printSchema()
+    if debug:
+        scaledData_final.show(2)
 
     ## Put all features into a dense vector using a Vector Assembler
-    input_cols = scaledData.columns
+    input_cols = list(scaledData_final.columns)
     output_col = "data"
     
     assembler = VectorAssembler(
             inputCols=input_cols,
-            outpuCol=output_col)
+            outputCol=output_col)
 
-    vectorizedData = assmbler.transform(scaledData_final).drop(input_cols)
+    vectorizedData = assembler.transform(scaledData_final)
     
-    return scaledData_final
+    final_data = vectorizedData.select("data")
+    
+    return final_data
     
 if __name__=="__main__":
     ## Start a PySpark session
@@ -131,10 +138,10 @@ if __name__=="__main__":
     sqlContext = ps.sql.SQLContext(sc)
     print('Created a SparkContext')
     local=True
-
+    debug=True
     ## Data Processing
     print('Starting the Data Processing')
-    processed_data = transform(sc,sqlContext,local)
+    processed_data = transform(sc,sqlContext,local,debug)
     processed_data.printSchema()
 
     ## Stop Spark Context
