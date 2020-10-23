@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603438654171,"sparkVersion":"3.0.1","uid":"StandardScaler_496c9c2c8a08","paramMap":{"outputCol":"horse_country_tsf_14_scaled","inputCol":"horse_country_tsf_14_vec"},"defaultParamMap":{"outputCol":"StandardScaler_496c9c2c8a08__output","withStd":true,"withMean":false}}

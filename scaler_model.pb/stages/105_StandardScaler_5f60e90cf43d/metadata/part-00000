@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603438574116,"sparkVersion":"3.0.1","uid":"StandardScaler_5f60e90cf43d","paramMap":{"outputCol":"distance_scaled","inputCol":"distance_vec"},"defaultParamMap":{"withStd":true,"outputCol":"StandardScaler_5f60e90cf43d__output","withMean":false}}
