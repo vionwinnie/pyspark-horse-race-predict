@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603756641377,"sparkVersion":"3.0.1","uid":"VectorAssembler_afd8ed178d67","paramMap":{"handleInvalid":"skip","outputCol":"distance_vec","inputCols":["distance"]},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_afd8ed178d67__output"}}

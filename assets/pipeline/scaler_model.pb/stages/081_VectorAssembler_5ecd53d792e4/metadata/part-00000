@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603438529886,"sparkVersion":"3.0.1","uid":"VectorAssembler_5ecd53d792e4","paramMap":{"outputCol":"horse_country_tsf_11_vec","inputCols":["horse_country_tsf_11"]},"defaultParamMap":{"outputCol":"VectorAssembler_5ecd53d792e4__output","handleInvalid":"error"}}

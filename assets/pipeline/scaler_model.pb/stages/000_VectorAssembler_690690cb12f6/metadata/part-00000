@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603756641063,"sparkVersion":"3.0.1","uid":"VectorAssembler_690690cb12f6","paramMap":{"outputCol":"surface_vec","handleInvalid":"skip","inputCols":["surface"]},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_690690cb12f6__output"}}

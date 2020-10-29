@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603438530750,"sparkVersion":"3.0.1","uid":"VectorAssembler_a87ce41c0b2a","paramMap":{"inputCols":["horse_age_12"],"outputCol":"horse_age_12_vec"},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_a87ce41c0b2a__output"}}

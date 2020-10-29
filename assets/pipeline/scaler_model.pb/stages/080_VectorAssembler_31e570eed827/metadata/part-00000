@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603438529644,"sparkVersion":"3.0.1","uid":"VectorAssembler_31e570eed827","paramMap":{"outputCol":"win_odds_11_vec","inputCols":["win_odds_11"]},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_31e570eed827__output"}}

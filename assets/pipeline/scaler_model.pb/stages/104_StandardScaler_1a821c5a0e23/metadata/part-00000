@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603438535599,"sparkVersion":"3.0.1","uid":"StandardScaler_1a821c5a0e23","paramMap":{"inputCol":"surface_vec","outputCol":"surface_scaled"},"defaultParamMap":{"withMean":false,"withStd":true,"outputCol":"StandardScaler_1a821c5a0e23__output"}}

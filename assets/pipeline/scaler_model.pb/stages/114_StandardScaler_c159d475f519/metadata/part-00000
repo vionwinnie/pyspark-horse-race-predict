@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603438584399,"sparkVersion":"3.0.1","uid":"StandardScaler_c159d475f519","paramMap":{"inputCol":"win_odds_1_vec","outputCol":"win_odds_1_scaled"},"defaultParamMap":{"withMean":false,"withStd":true,"outputCol":"StandardScaler_c159d475f519__output"}}

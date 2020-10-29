@@ -7,7 +7,7 @@ cluster_name="${PROJECT_ID}-cluster-1"
 
 # Define copy function
 scp_func () {
-    script_directory='/home/winnie/petProjects/jockeyClub/repo/deploy'
+    script_directory='/home/winnie/petProjects/jockeyClub/repo/inference'
     script_path="${script_directory}/$1"
     bucket_script_path="gs://${PROJECT_ID}/code/inference/$1"
     echo $script_path $bucket_script_path 
