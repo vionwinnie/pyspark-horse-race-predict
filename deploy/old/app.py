@@ -41,6 +41,7 @@ def main(sc,sqlContext):
     predictions_df = df.select(predict_batch_udf(col("data")).alias("prediction"))
     predictions_df.printSchema()
 
+    print('Inference completed')
     predictions_df.show(2)
 
     

@@ -1,6 +1,5 @@
+import pandas as pd
 import pyspark as ps
-from pyspark.sql import functions as f
-from pyspark.sql import types as t
 
 def rename_columns(df, columns):
     if isinstance(columns, dict):
@@ -24,3 +23,9 @@ def rename_col_dictionary(i):
      "horse_type_tsf": "horse_type_tsf_{}".format(i)}
 
     return mapping_cols
+
+def reset_number(df):
+    for i in range(1,15):
+        df = df.withColumn("result_{}_msk".format(i), f.when((f.col("result_{}".format(i)) == 1),1).otherwise(0)).drop("result_{}".format(i))
+    return df
+
