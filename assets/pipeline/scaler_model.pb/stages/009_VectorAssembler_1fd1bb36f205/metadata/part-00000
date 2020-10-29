@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603756641911,"sparkVersion":"3.0.1","uid":"VectorAssembler_1fd1bb36f205","paramMap":{"inputCols":["actual_weight_1"],"handleInvalid":"skip","outputCol":"actual_weight_1_vec"},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_1fd1bb36f205__output"}}

@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1603756641708,"sparkVersion":"3.0.1","uid":"VectorAssembler_36180d7c05fa","paramMap":{"handleInvalid":"skip","outputCol":"venue_tsf_vec","inputCols":["venue_tsf"]},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_36180d7c05fa__output"}}

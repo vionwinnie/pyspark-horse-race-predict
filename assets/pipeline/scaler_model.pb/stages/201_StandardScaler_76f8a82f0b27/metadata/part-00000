@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603756658522,"sparkVersion":"3.0.1","uid":"StandardScaler_76f8a82f0b27","paramMap":{"inputCol":"horse_age_14_vec","outputCol":"horse_age_14_scaled"},"defaultParamMap":{"withMean":false,"outputCol":"StandardScaler_76f8a82f0b27__output","withStd":true}}

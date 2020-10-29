@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.StandardScalerModel","timestamp":1603756647533,"sparkVersion":"3.0.1","uid":"StandardScaler_68aa29bde683","paramMap":{"outputCol":"going_tsf_scaled","inputCol":"going_tsf_vec"},"defaultParamMap":{"withMean":false,"outputCol":"StandardScaler_68aa29bde683__output","withStd":true}}
