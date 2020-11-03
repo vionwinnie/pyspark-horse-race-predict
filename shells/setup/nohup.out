@@ -1,0 +1,22 @@
+Creating gs://pyspark-jockey-club-warehouse/...
+Copying file://cloud-sql-proxy.sh [Content-Type=text/x-sh]...
+/ [0 files][    0.0 B/ 13.9 KiB]                                                / [1 files][ 13.9 KiB/ 13.9 KiB]                                                -
+Operation completed over 1 objects/13.9 KiB.                                     
+Copying file://conda-install.sh [Content-Type=text/x-sh]...
+/ [0 files][    0.0 B/  639.0 B]                                                / [1 files][  639.0 B/  639.0 B]                                                
+Operation completed over 1 objects/639.0 B.                                      
+Copying file://pip-install.sh [Content-Type=text/x-sh]...
+/ [0 files][    0.0 B/  968.0 B]                                                / [1 files][  968.0 B/  968.0 B]                                                -
+Operation completed over 1 objects/968.0 B.                                      
+Copying file://conda-install.sh [Content-Type=text/x-sh]...
+/ [0 files][    0.0 B/  639.0 B]                                                / [1 files][  639.0 B/  639.0 B]                                                
+Operation completed over 1 objects/639.0 B.                                      
+Copying file://pip-install.sh [Content-Type=text/x-sh]...
+/ [0 files][    0.0 B/  968.0 B]                                                / [1 files][  968.0 B/  968.0 B]                                                
+Operation completed over 1 objects/968.0 B.                                      
+pyspark-jockey-club-cluster-4
+pyspark-jockey-club
+Waiting on operation [projects/pyspark-jockey-club/regions/us-central1/operations/004f5638-c289-3ede-afc5-c562baccb195].
+Waiting for cluster creation operation...
+.........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................done.
+Created [https://dataproc.googleapis.com/v1/projects/pyspark-jockey-club/regions/us-central1/clusters/pyspark-jockey-club-cluster-4] Cluster placed in zone [us-central1-b].
