@@ -68,10 +68,11 @@ def transform_runs_df(model_dir,runs_df,sparkSession=None):
 
     # Transforming from long to wide dataframe
     unique_val = runs_processed_df.select("race_id").distinct().collect()
+    print(unique_val)
     all_race_id_list = [val['race_id'] for val in unique_val ]
     # Generate a pandas DataFrame
     pdf = pd.DataFrame({'race_id':all_race_id_list})
-    print(pdf.shape)
+    print("number of horse race_id: {}".format(pdf.shape))
 
     # Create a Spark DataFrame from a pandas DataFrame using Arrow
     sc = None
@@ -85,13 +86,15 @@ def transform_runs_df(model_dir,runs_df,sparkSession=None):
     final = sqlContext.createDataFrame(pdf)
 
     for i in range(1,15):
-        print(i)
         tmp = runs_processed_df.filter("draw={}".format(i))
-        print(tmp.count())
+        print("draw={} with row: {}".format(i,tmp.count()))
         mapping_cols = rename_col_dictionary(i)    
         tmp = rename_columns(tmp,mapping_cols)
         final = final.join(tmp,["race_id"],how='left')
-        print("col size:{}".format(len(final.columns)))
+        print("final df size:{}".format(final.count()))
+
+        if i ==3:
+            final.show()
 
     wide_runs_df = final
     wide_runs_df = wide_runs_df.fillna(0)

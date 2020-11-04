@@ -1,6 +1,20 @@
 import pandas as pd
 import pyspark as ps
 
+from pyspark.sql.functions import udf, col
+from pyspark.sql.types import ArrayType, DoubleType
+import pyspark.sql.functions as f
+
+def to_array(col):
+    def to_array_(v):
+        return v.toArray().tolist()
+    # Important: asNondeterministic requires Spark 2.3 or later
+    # It can be safely removed i.e.
+    # return udf(to_array_, ArrayType(DoubleType()))(col)
+    # but at the cost of decreased performance
+    return udf(to_array_, ArrayType(DoubleType())).asNondeterministic()(col)
+
+
 def rename_columns(df, columns):
     if isinstance(columns, dict):
         for old_name, new_name in columns.items():
