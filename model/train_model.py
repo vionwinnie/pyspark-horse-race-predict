@@ -1,5 +1,5 @@
 ## Loading Packages and Dependencies
-import sys
+import sys,os
 import pyspark as ps
 import warnings
 import re
@@ -86,7 +86,7 @@ def main(sc,sqlContext):
     dropout=0.3
     
     model = create_model.build(lr=learning_rate,dropout=dropout)
-    weight_callback = create_model.set_callback()
+    callback_path,weight_callback = create_model.set_callback()
 
     ## Create dataset 
     dataset = tf.data.Dataset.from_tensor_slices((X_train.values, y_train.values))
@@ -104,7 +104,7 @@ def main(sc,sqlContext):
     ## Save Model
     tf.keras.backend.set_learning_phase(0)
     
-    export_model_dir = "./output/export_model/"
+    export_model_dir = "/home/dcvionwinnie/output/export_model/"
     if os.path.exists(export_model_dir):
         shutil.rmtree(export_model_dir)
     os.makedirs(export_model_dir)
@@ -112,6 +112,9 @@ def main(sc,sqlContext):
     export_path = '{}/batch_size-{}_lr-{}_epoch_{}_dropout_{}'.format(export_model_dir,batch_size,learning_rate,epoch,dropout)
     model.save(export_path) 
     print("Model exported")
+
+    print(callback_path)
+    print(os.path.abspath(export_path))
 
     return X_train,X_test,y_train,y_test
 

@@ -2,7 +2,7 @@ import tensorflow as tf
 import os,shutil
 
 def set_callback():
-    callback_dir = "./output/callback/"
+    callback_dir = "/home/dcvionwinnie/output/callback/"
     weight_cur_epoch = callback_dir + "{epoch:02d}-weight-validation-loss-{val_loss:.4f}.hdf5"
     
     print("========================================================")
@@ -16,7 +16,7 @@ def set_callback():
         verbose=1,
         save_weights_only=True,
         period=5)
-    return weight_callback
+    return os.path.abspath(callback_dir),weight_callback
 
 ## Set up a tensorflow sequential model
 def build(lr,dropout):
