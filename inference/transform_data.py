@@ -68,7 +68,7 @@ def transform_runs_df(model_dir,runs_df,sparkSession=None):
 
     # Transforming from long to wide dataframe
     unique_val = runs_processed_df.select("race_id").distinct().collect()
-    print(unique_val)
+    #print(unique_val)
     all_race_id_list = [val['race_id'] for val in unique_val ]
     # Generate a pandas DataFrame
     pdf = pd.DataFrame({'race_id':all_race_id_list})
@@ -91,10 +91,7 @@ def transform_runs_df(model_dir,runs_df,sparkSession=None):
         mapping_cols = rename_col_dictionary(i)    
         tmp = rename_columns(tmp,mapping_cols)
         final = final.join(tmp,["race_id"],how='left')
-        print("final df size:{}".format(final.count()))
-
-        if i ==3:
-            final.show()
+    #    print("final df size:{}".format(final.count()))
 
     wide_runs_df = final
     wide_runs_df = wide_runs_df.fillna(0)

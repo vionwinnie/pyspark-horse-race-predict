@@ -1,0 +1,14 @@
+35.193.23.37
+35.238.66.31
+104.197.33.127
+
+SQL: 35.226.103.69
+
+mysql --host=35.226.103.69 --user=root --password
+
+## PySpark to SQL
+mysql --host=35.226.103.69 --user=root --password
+
+https://support.datafabric.hpe.com/s/article/PySpark-to-MySQL-connectivity?language=en_US
+
+

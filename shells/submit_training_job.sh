@@ -3,7 +3,7 @@
 # Set Project ID
 PROJECT_ID='pyspark-jockey-club'
 REGION='us-central1'
-cluster_name="${PROJECT_ID}-cluster-3"
+cluster_name="${PROJECT_ID}-cluster-4"
 
 # Define copy function
 scp_func () {
@@ -14,9 +14,9 @@ scp_func () {
     gsutil cp ${script_path} ${bucket_script_path}
 }
 
-# Copy the training dat to bucket
-gsutil cp /home/winnie/petProjects/jockeyClub/repo/assets/data/races.csv "gs://${PROJECT_ID}/data/races.csv"
-gsutil cp /home/winnie/petProjects/jockeyClub/repo/assets/data/runs.csv "gs://${PROJECT_ID}/data/runs.csv"
+# Copy the training data to bucket
+#gsutil cp /home/winnie/petProjects/jockeyClub/repo/assets/data/races.csv "gs://${PROJECT_ID}/data/races.csv"
+#gsutil cp /home/winnie/petProjects/jockeyClub/repo/assets/data/runs.csv "gs://${PROJECT_ID}/data/runs.csv"
 
 # Copy the local script to bucket before submitting the pyspark job
 script_name1='train_model.py'

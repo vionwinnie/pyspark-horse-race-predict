@@ -15,7 +15,7 @@ from pyspark.ml.feature import Tokenizer, NGram, CountVectorizer, IDF, StringInd
 from pyspark.ml import Pipeline,PipelineModel
 
 ## Import from modules
-from utils import rename_col_dictionary,reset_number,rename_columns
+from utils import rename_col_dictionary,reset_number,rename_columns,to_array
 from transform_data import transform_race_df,transform_runs_df,join_runs_and_race,scale_select_col
 import connect_db as conn
 import create_model
@@ -26,21 +26,16 @@ outputdir=sys.argv[3]
 
 ## Load Model Weights
 @pandas_udf(ArrayType(FloatType()), PandasUDFType.SCALAR)
-def predict_batch_udf(data):
+def predict_udf(data):
     batch_size = 8
     learning_rate = 3e-04
     dropout= 0.3
     model = create_model.build(lr=learning_rate,dropout=dropout)
-    weight_path = modeldir+'/output/callback/95-weight-validation-loss-2.4853.hdf5'
+
+    weight_path="/home/dcvionwinnie/output/callback/90-weight-validation-loss-2.4644.hdf5"
     model.load_weights(weight_path)
-
-    dataset = tf.data.Dataset.from_tensor_slices(data_batch).batch(batch_size)
-    preds = model.predict(dataset)
-    print(preds.shape)
-    results = pd.Series(list(preds))
-    #print(results)
-
-    return results
+    preds = model.predict_classes(data, verbose=1)
+    return pd.Series(preds)
 
 def main(sc,sqlContext,local=False):
 
@@ -90,14 +85,45 @@ def main(sc,sqlContext,local=False):
     ## Vectorize and Scale Numeric Features of join_df
     scaler_modeldir = modeldir+'/scaler_model.pb'
     processed_join_df = scale_select_col(scaler_modeldir,join_df)
-    
     print("data processing completed with {} rows".format(processed_join_df.count()))
+    ## Convert into pandas dataframe for prediction
+    processed_df_exploded = processed_join_df.withColumn("v", to_array("scaled_features"))
+    processed_join_pdf = processed_df_exploded.select([col("v")[i] for i in range(104)]).toPandas()
 
-    pred_df = processed_join_df.select(predict_batch_udf(col("scaled_features")).alias("prediction"))
-    pred_df.printSchema()
+    ## Load Model - need to preload model to each node from storage bucket
+    learning_rate = 3e-04
+    dropout= 0.3
+    model = create_model.build(lr=learning_rate,dropout=dropout)
+    weight_path="/home/dcvionwinnie/output/callback/90-weight-validation-loss-2.4644.hdf5"
+    model.load_weights(weight_path)    
+    preds = model.predict_classes(processed_join_pdf)
+    preds = [int(item)+1 for item in preds]
 
- 
-    return 1,2,3,4
+    ## Export Results to MySQL
+    race_id_col = join_df.select("race_id").collect()
+    race_id_list = [row['race_id'] for row in race_id_col]
+
+    tuple_result = [(race_id,pred_score) for race_id, pred_score in zip(race_id_list,preds)]
+    result_df = sqlContext.createDataFrame(tuple_result,['race_id','draw'])
+
+    tmp_run_df = runs_df.select("race_id","draw","horse_name")
+    output_df = result_df.join(tmp_run_df,on=["race_id","draw"],how="left")
+    output_df.show()
+
+    output_df.write.jdbc(url=jdbc_url,table="prediction",mode="overwrite")
+            
+    #.options(driver='com.mysql.jdbc.Driver',url=jdbc_url,dbtable="prediction")
+    print("output is exported")
+    """
+
+    ## to_array takes in the lambda function for list and return array type with float value
+    to_array = f.udf(lambda v: v.toArray().tolist(), t.ArrayType(t.FloatType()))
+    processed_join_exploded = processed_join_df.withColumn('array_scaled', to_array('scaled_features')).select('array_scaled')
+    pred_df = processed_join_exploded.select(predict_udf(col("array_scaled")).alias("prediction"))
+    pred_df.show()
+    #pred_df_exploded.printSchema()
+    """
+    return None
 
 if __name__=="__main__":
     
@@ -107,6 +133,6 @@ if __name__=="__main__":
     sqlContext = ps.sql.SQLContext(sc)
     print('Created a SparkContext')
 
-    X_train, X_test, y_train, y_test = main(sc,sqlContext,local=False)
+    final = main(sc,sqlContext,local=False)
     print('Spark job completed')
     sc.stop()
