@@ -1,17 +1,17 @@
 # Integrating data pipeline with Tensorflow Model Deployment using PySpark
 - Presentation for PyCon HK 2020 Fall Session (Cantonese Track)
 - Speaker: Winnie Yeung
+- [Slide Deck](https://bit.ly/35eXcqD)
 
 ## Problem Description
 How can we predict the winning horse out of each race at Jockey Club horse race?
 
 ## Tech Stack
-- PySpark, Pandas, Numpy, Tensorflow 2.0, Java, Hive
+- GCP Dataproc, PySpark 2.4.7, Pandas, Tensorflow 2.0, Java
 
-## Setting Up Local Environment
-
-## Running Individual Scripts
-- ```pyspark < script.py```
+## Running jobs 
+- Individual Script: ```pyspark < script.py```
+- Submit job on GCP Dataproc: /shells/ ```nohup ./submit_inference_job.sh &```
 
 ## Credits
 - Lantana Camara Dataset on Kaggle: https://www.kaggle.com/lantanacamara/hong-kong-horse-racing
