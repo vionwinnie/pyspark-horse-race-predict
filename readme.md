@@ -1,7 +1,7 @@
 # Integrating data pipeline with Tensorflow Model Deployment using PySpark
 - Presentation for PyCon HK 2020 Fall Session (Cantonese Track)
 - Speaker: Winnie Yeung
-- [Slide Deck](https://bit.ly/35eXcqD)
+- [Slide Deck](https://bit.ly/32sYCgn)
 
 ## Problem Description
 How can we predict the winning horse out of each race at Jockey Club horse race?
